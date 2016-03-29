@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"  
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">    
+<hibernate-mapping package="com.gyb.domain">
+	<class name="School" table="school"  >
+		<id name="id" column="id" type="java.lang.Integer">
+			<generator class="sequence">
+				<param name="sequence">school_seq</param>
+			</generator>
+		</id>
+		
+		<property name="schoolName" type="java.lang.String">
+			<column name="schoolName"  length="50" />
+		</property>
+		
+		<property name="address" type="java.lang.String">
+			<column name="address"  length="100" />
+		</property>
+		
+	
+		<set name="students" cascade="save-update" >
+			<key column="school_id"></key>
+			<one-to-many class="Student"   />
+		</set>
+
+	</class>
+</hibernate-mapping>

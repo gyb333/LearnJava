@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="aopServiceTarget" class="com.gyb.aop.AopService">
+    <property name="name" value="Tony"/>
+    <property name="age" value="51"/>
+	</bean>
+
+<bean id="aopMethodInterceptor" class="com.gyb.learn.spring.AopMethodInterceptor" />
+<bean id="aopMethodBeforeAdvice" class="com.gyb.learn.spring.AopMethodBeforeAdvice" />
+<bean id="aopAfterReturningAdvice" class="com.gyb.learn.spring.AopAfterReturningAdvice" />
+<bean id="aopThrowAdvice" class="com.gyb.learn.spring.AopThrowAdvice" />
+
+<!-- 
+<bean id="regexpMethodPointcutAdvisor"
+        class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice">
+        <ref bean="aopMethodInterceptor"/>
+    </property>
+    
+    <property name="patterns">
+        
+            <value>GetData.*</value>
+      
+    </property>
+</bean>
+ -->
+ 
+ <bean id="AdviceFilter" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+ 	<property name="advice" ref="aopMethodInterceptor"/>
+ 	<property name="mappedNames">
+ 		<list>
+ 			<value>SayHello</value>
+ 		</list>
+ 	</property>
+ </bean>
+
+
+
+<bean id="proxyFactoryBean"
+    class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces" >
+    	<list>
+    	<value>com.gyb.learn.spring.IService</value>
+    	<value>com.gyb.learn.spring.IService1</value>
+    	</list>
+    </property>
+
+    <property name="target" ref="aopServiceTarget"/>
+    
+    <property name="interceptorNames">
+        <list>
+            <value>AdviceFilter</value>
+            <value>aopMethodBeforeAdvice</value>
+            <value>aopAfterReturningAdvice</value>
+            <value>aopThrowAdvice</value>
+        </list>
+    </property>
+</bean>
+
+</beans>
